@@ -5,6 +5,8 @@ use Test::LeakTrace;
 
 use NgxQueue;
 
+diag "Test for: " . NgxQueue::BACKEND;
+
 my $q = NgxQueue->new;
 ok $q->empty;
 
@@ -28,6 +30,18 @@ is $q->last->data, 'bar';
 
 $q->head->remove;
 ok $q->empty;
+
+
+# insert after
+$q->insert_after( NgxQueue->new('bar') );
+ok !$q->empty;
+
+is $q->head->data, 'bar';
+is $q->last->data, 'bar';
+
+$q->head->remove;
+ok $q->empty;
+
 
 # insert multi
 $q->insert_tail( NgxQueue->new('foo') );
